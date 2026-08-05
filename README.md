@@ -51,7 +51,12 @@ while aline and not quit:
 		quit = True
 
 fc.close()
-see i don't even know were to put them like i cant hack to save my for crying out loud\
+
+see i don't even know were to put them like i cant hack to save my LIFE for crying out loud
 but just want yall to know i need to know
 
-any way bye besties ;]
+BTW the 4th roseixbud script has been taken down 
+
+RAZERxV0C OUT bye besties ;]
+
+

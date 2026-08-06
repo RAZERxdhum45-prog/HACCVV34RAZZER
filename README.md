@@ -57,6 +57,6 @@ but just want yall to know i need to know
 
 BTW the 4th roseixbud script has been taken down 
 
-RAZERxV0C OUT bye besties ;]
+
 
 

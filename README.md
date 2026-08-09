@@ -54,4 +54,4 @@ fc.close()
 see i don't even know were to put them like i cant hack to save my for crying out loud\
 but just want yall to know i need to know
 
-any way bye besties ;]
+any way bye 

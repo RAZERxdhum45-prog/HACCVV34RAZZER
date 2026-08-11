@@ -1,0 +1,30 @@
+import requests
+import sys
+
+REQUIRED = [
+    "Strict-Transport-Security",
+    "Content-Security-Policy",
+    "X-Content-Type-Options",
+    "X-Frame-Options",
+    "Referrer-Policy",
+    "Permissions-Policy",
+]
+
+def check(url):
+    try:
+        r = requests.get(url, timeout=10, allow_redirects=True)
+    except Exception as e:
+        print(f"Error fetching {url}: {e}")
+        return
+    print(f"URL: {r.url}  Status: {r.status_code}")
+    for h in REQUIRED:
+        print(f"{h}: {'PRESENT' if h in r.headers else 'MISSING'}")
+    print("\nFull headers:")
+    for k,v in r.headers.items():
+        print(f"{k}: {v}")
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print("Usage: check_security_headers.py https://example.com")
+    else:
+        check(sys.argv[1])

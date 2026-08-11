@@ -1,0 +1,12 @@
+import psutil
+
+for conn in psutil.net_connections(kind='inet'):
+    if conn.status == 'LISTEN':
+        pid = conn.pid or 'N/A'
+        laddr = f"{conn.laddr.ip}:{conn.laddr.port}"
+        try:
+            proc = psutil.Process(conn.pid) if conn.pid else None
+            name = proc.name() if proc else 'N/A'
+        except Exception:
+            name = 'N/A'
+        print(f"{laddr}  pid={pid}  process={name}")

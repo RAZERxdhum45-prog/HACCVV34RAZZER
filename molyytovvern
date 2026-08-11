@@ -1,0 +1,9 @@
+if [ -z "$1" ]; then
+  echo "Usage: $0 <target>"
+  exit 1
+fi
+TARGET="$1"
+OUT="nmap_${TARGET}_$(date +%Y%m%d%H%M%S)"
+# conservative: service/version detection and default scripts
+nmap -sV -sC -T4 --open -oA "$OUT" "$TARGET"
+echo "Saved output as ${OUT}.*"

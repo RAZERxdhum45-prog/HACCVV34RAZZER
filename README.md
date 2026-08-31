@@ -60,9 +60,7 @@ BTW the 4th roseixbud script has been taken down
 
 
 
-THIS PART IS WRIGHTEN BY; JASON
-I CAME UP WITH THE NUENIXLILLY SCRIPS 
-i let them Collab and make it RAZERxV0Cs 
+
 
 lilly ; hi i helped make the dot art
 

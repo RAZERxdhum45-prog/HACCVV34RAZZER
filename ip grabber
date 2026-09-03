@@ -1,0 +1,26 @@
+from flask import Flask, request, jsonify
+import datetime
+
+app = Flask(__name__)
+
+@app.route('/login', methods=['GET'])
+def log_connection():
+    # Capture the client's IP address
+    # If behind a proxy (like Cloudflare or an AWS ALB), use HTTP_X_FORWARDED_FOR
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    
+    # Capture the browser/device identifier
+    user_agent = request.headers.get('User-Agent')
+    
+    # Log the metadata locally for security monitoring
+    print(f"[{datetime.datetime.now()}] Connection from {client_ip} - Agent: {user_agent}")
+    
+    # Standard application response
+    return jsonify({
+        "status": "success",
+        "message": "Authentication portal loaded."
+    })
+
+if __name__ == '__main__':
+    # Running locally for testing purposes
+    app.run(host='0.0.0.0', port=5000)

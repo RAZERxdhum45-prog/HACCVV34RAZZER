@@ -1,0 +1,10 @@
+# Conceptual illustration for educational testing of compression limits
+import zipfile
+
+# Creating a small repeating sequence of bytes that compresses heavily
+data = b"A" * 1024  
+with zipfile.ZipFile('test_bomb.zip', 'w', compression=zipfile.ZIP_DEFLATED) as zf:
+    # Writing multiple references or repeating files to observe ratio
+    for i in range(100):
+        zf.writestr(f"file_{i}.txt", data)
+
